@@ -7,10 +7,10 @@ $font-family-sans-serif: "Red Hat Text", FreeSerif, serif !default;
 $RedHatDisplay: "Red Hat Display", sans-serif, bold;
 
 // colors
-$primary-color: #c5050c;
-$accent-red: #9B0000;
+$primary-color: #063244;
+$accent-red: #908065;
 $background-grey: #F7F7F7;
-$link-blue: #0479A8;
+$link-blue: #0190DB;
 $text-grey: #333333;
 $chunk-white: #fff;
 
@@ -40,7 +40,7 @@ h1, h2 {
 
 .btn {
   color: $background-grey;
-  background-color: $link-blue; 
+  background-color: $link-blue;
   border-color: $link-blue;
 }
 

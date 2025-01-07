@@ -16,7 +16,7 @@ primary_color <- '#9B0000'
 dark_accent <- '#333333'
 background_color <- '#F7F7F7'
 
-uni_name <- 'UW-Madison'
+uni_name <- 'GWU'
 
 ####
 # Set custom fonts for plots
@@ -33,7 +33,7 @@ bar_theme <- theme(legend.position = 'bottom',
       panel.grid.minor.y = element_blank(),
       panel.background = element_rect(fill = background_color),
       legend.background = element_rect(fill = background_color),
-      plot.background = element_rect(fill = background_color, 
+      plot.background = element_rect(fill = background_color,
                                      color = background_color))
 
 bar_coord_flip_theme <- theme(axis.ticks = element_blank(),
@@ -42,7 +42,7 @@ bar_coord_flip_theme <- theme(axis.ticks = element_blank(),
                               panel.grid.minor.x = element_blank(),
                               panel.background = element_rect(fill = background_color),
                               legend.background = element_rect(fill = background_color),
-                              plot.background = element_rect(fill = background_color, 
+                              plot.background = element_rect(fill = background_color,
                                                              color = background_color))
 
 lollipop_theme <- theme(legend.position = 'none',
@@ -50,18 +50,18 @@ lollipop_theme <- theme(legend.position = 'none',
                         panel.grid.major = element_blank(),
                         panel.background = element_rect(fill = background_color),
                         legend.background = element_rect(fill = background_color),
-                        plot.background = element_rect(fill = background_color, 
+                        plot.background = element_rect(fill = background_color,
                                                        color = background_color))
 
 ####
 # Data loading and cleaning
-survey_df <- read_csv("data/survey_data.csv")
+survey_df <- read_csv("data/survey_data_gwu_2024.csv")
 
-# Extract survey results template - for convenience, eases reviewing questions 
+# Extract survey results template - for convenience, eases reviewing questions
 # and question IDs
 
-survey_template <- survey_df[1,] |> 
-  unnest() |> 
+survey_template <- survey_df[1,] |>
+  unnest() |>
   pivot_longer(
     cols = everything(),
     names_to = 'q_number',
@@ -70,11 +70,11 @@ survey_template <- survey_df[1,] |>
 
 # Extract survey results data, keeping complete responses only
 
-survey_results <- read_csv("data/survey_data.csv", 
-                           col_names = FALSE, skip = 3) |> 
+survey_results <- read_csv("data/survey_data_gwu_2024.csv",
+                           col_names = FALSE, skip = 3) |>
   tail(-2)
 
 colnames(survey_results) <- survey_template$q_number
 
-survey_results <- survey_results |> 
+survey_results <- survey_results |>
   filter(Finished == TRUE)

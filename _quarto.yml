@@ -10,15 +10,15 @@ website:
     logo: images/header-logo.png
     right:
       - icon: github
-        href: https://github.com/UW-Madison-DSI/open_source_survey_results
+        href: https://github.com/gw-ospo/open_source_survey_results/tree/main
         aria-label: GitHub
   sidebar:
     style: "floating"
   page-footer:
     background: dark
-    left: UW-Madison Open Source Survey Results [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/UW-Madison-DSI/open_source_survey_results){target=_blank}
-    right: This website is built with [Quarto](https://quarto.org/){target=_blank} by UW-Madison’s [Open Source Program Office](https://ospo.wisc.edu/) and [Data Science Institute](https://datascience.wisc.edu/institute/)
-    
+    left: GWU Open Source Survey Results [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/gw-ospo/open_source_survey_results){target=_blank}
+    right: This website is built with [Quarto](https://quarto.org/){target=_blank} by GWU’s [Open Source Program Office](https://ospo.gwu.edu/)
+
 execute:
   echo: false
   message: false
@@ -32,6 +32,3 @@ format:
     theme: [default, custom.scss]
     toc: true
     mainfont: Red Hat Text
-
-
-
