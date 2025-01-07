@@ -55,7 +55,10 @@ lollipop_theme <- theme(legend.position = 'none',
 
 ####
 # Data loading and cleaning
-survey_df <- read_csv("data/survey_data_gwu_2024.csv")
+
+csv_filepath <-  "data/survey_data_gwu_2024_colsfix.csv"
+
+survey_df <- read_csv(csv_filepath)
 
 # Extract survey results template - for convenience, eases reviewing questions
 # and question IDs
@@ -70,7 +73,7 @@ survey_template <- survey_df[1,] |>
 
 # Extract survey results data, keeping complete responses only
 
-survey_results <- read_csv("data/survey_data_gwu_2024.csv",
+survey_results <- read_csv(csv_filepath,
                            col_names = FALSE, skip = 3) |>
   tail(-2)
 
