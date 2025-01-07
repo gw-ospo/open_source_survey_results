@@ -56,7 +56,7 @@ lollipop_theme <- theme(legend.position = 'none',
 ####
 # Data loading and cleaning
 
-csv_filepath <-  "data/survey_data_gwu_2024_colsfix_public.csv"
+csv_filepath <-  "data/survey_data_gwu_2024_colsfix_public_completed.csv"
 
 survey_df <- read_csv(csv_filepath)
 

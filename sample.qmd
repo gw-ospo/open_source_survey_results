@@ -15,25 +15,25 @@ source('setup.R')
 ### Role
 
 ```{r}
-plotly_treemap_role_df <- survey_results |>  
-  group_by(type = QID4, division = QID8) |> 
-  summarise(n = n()) |> 
+plotly_treemap_role_df <- survey_results |>
+  group_by(type = QID4, division = QID8) |>
+  summarise(n = n()) |>
   mutate(
     type = ifelse(is.na(type), 'Unaffiliated', type),
     division = ifelse(is.na(division), 'Unaffiliated', division)
   )
 
-plotly_treemap_role_df <- plotly_treemap_role_df |> 
+plotly_treemap_role_df <- plotly_treemap_role_df |>
   bind_rows(
-    survey_results |> 
-      group_by(division = QID4) |> 
-      summarise(n = n()) |> 
+    survey_results |>
+      group_by(division = QID4) |>
+      summarise(n = n()) |>
       mutate(
         division = ifelse(is.na(division), 'Unaffiliated', division)
       )
-  ) |> 
-  mutate(ids = ifelse(is.na(type), division, paste0(type, "_", division))) |>  
-  select(ids, everything()) |> 
+  ) |>
+  mutate(ids = ifelse(is.na(type), division, paste0(type, "_", division))) |>
+  select(ids, everything()) |>
   mutate(
     ids = ifelse(is.na(ids), "", ids),
     division = ifelse(is.na(division), type, division),
@@ -41,7 +41,7 @@ plotly_treemap_role_df <- plotly_treemap_role_df |>
     n = as.double(n)
   )
 
-plot_ly(type = "treemap", 
+plot_ly(type = "treemap",
         data = plotly_treemap_role_df,
         labels = ~division,
         parents = ~type,
@@ -52,7 +52,7 @@ plot_ly(type = "treemap",
         textposition = "inside", # insidetextanchor = "middle",
         textfont = list(size = 14),
         branchvalues = "total"
-        ) |> 
+        ) |>
   layout(title = "Survey Respondents",
          plot_bgcolor  = background_color,
          paper_bgcolor = background_color)
@@ -61,25 +61,25 @@ plot_ly(type = "treemap",
 ### Affiliation
 
 ```{r}
-plotly_treemap_affiliation_df <- survey_results |>  
-  group_by(type = QID4, division = QID8) |> 
-  summarise(n = n()) |> 
+plotly_treemap_affiliation_df <- survey_results |>
+  group_by(type = QID4, division = QID8) |>
+  summarise(n = n()) |>
   mutate(
     type = ifelse(is.na(type), 'Unaffiliated', type),
     division = ifelse(is.na(division), 'Unaffiliated', division)
   )
 
-plotly_treemap_affiliation_df <- plotly_treemap_affiliation_df |> 
+plotly_treemap_affiliation_df <- plotly_treemap_affiliation_df |>
   bind_rows(
-    survey_results |> 
-      group_by(type = QID8) |> 
-      summarise(n = n()) |> 
+    survey_results |>
+      group_by(type = QID8) |>
+      summarise(n = n()) |>
       mutate(
         type = ifelse(is.na(type), 'Unaffiliated', type)
       )
-  ) |> 
-  mutate(ids = ifelse(is.na(division), type, paste0(division, "_", type))) |>  
-  select(ids, everything()) |> 
+  ) |>
+  mutate(ids = ifelse(is.na(division), type, paste0(division, "_", type))) |>
+  select(ids, everything()) |>
   mutate(
     ids = ifelse(is.na(ids), "", ids),
     division = ifelse(is.na(division), "", division),
@@ -87,7 +87,7 @@ plotly_treemap_affiliation_df <- plotly_treemap_affiliation_df |>
     n = as.double(n)
   )
 
-plot_ly(type = "treemap", 
+plot_ly(type = "treemap",
         data = plotly_treemap_affiliation_df,
         labels = ~type,
         parents = ~division,
@@ -98,7 +98,7 @@ plot_ly(type = "treemap",
         textposition = "inside", insidetextanchor = "middle",
         textfont = list(size = 14),
         branchvalues = "total"
-        ) |> 
+        ) |>
   layout(title = "Survey Respondents",
          plot_bgcolor  = background_color,
          paper_bgcolor = background_color)
@@ -109,10 +109,10 @@ plot_ly(type = "treemap",
 <b>`r round((sum(survey_results$QID22 == 'Yes', na.rm = TRUE) / nrow(survey_results) * 100))`%</b> of respondents said they have contributed to open source projects, either academically or personally.
 
 ```{r}
-c1_df <- survey_results |> 
-  mutate(QID4 = ifelse(is.na(QID4), 'Unafilliated', QID4)) |> 
-  rename(`Respondent Type` = QID4) |> 
-  group_by(QID22, `Respondent Type`) |> 
+c1_df <- survey_results |>
+  mutate(QID4 = ifelse(is.na(QID4), 'Unafilliated', QID4)) |>
+  rename(`Respondent Type` = QID4) |>
+  group_by(QID22, `Respondent Type`) |>
   summarise(Count = n(),
             Percent = n() / nrow(survey_results))
 
@@ -140,15 +140,15 @@ c1_df |>
 
 ### Faculty and Staff
 
-Of these respondents, `r nrow(survey_results[survey_results$QID4 == 'Faculty'|survey_results$QID4 == 'Staff',])` identified as faculty or staff (`r round(nrow(survey_results[survey_results$QID4 == 'Faculty'|survey_results$QID4 == 'Staff',]) / nrow(survey_results), 2) * 100`% of respondents). 
+Of these respondents, `r nrow(survey_results[survey_results$QID4 == 'Faculty'|survey_results$QID4 == 'Staff',])` identified as faculty or staff (`r round(nrow(survey_results[survey_results$QID4 == 'Faculty'|survey_results$QID4 == 'Staff',]) / nrow(survey_results), 2) * 100`% of respondents).
 
 Faculty and staff respondents were distributed in tenure (years served) at the university as below:
 
 ```{r}
-tenure_gg <- survey_results |> 
-  mutate(QID6 = factor(QID6, 
-                       levels = c('0-1 years', '1-3 years', '4-7 years', '7-10 years', '10+ years'))) |> 
-  filter(QID4 %in% c('Faculty', 'Staff')) |> 
+tenure_gg <- survey_results |>
+  mutate(QID6 = factor(QID6,
+                       levels = c('0-1 years', '1-3 years', '4-7 years', '7-10 years', '10+ years'))) |>
+  filter(QID4 %in% c('Faculty', 'Staff')) |>
   ggplot(aes(y = QID6)) +
   geom_bar(fill = primary_color
            ) +
@@ -168,13 +168,15 @@ ggplotly(tenure_gg, tooltip = 'count')
 `r nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',])` respondents identified at students (`r round(nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',]) / nrow(survey_results), 2) * 100`% of respondents). Students came from degree programs in the following subjects:
 
 ```{r}
-major_gg <- survey_results |> 
-  filter(QID4 %in% c('Graduate Student', 'Undergraduate Student')) |> 
+major_gg <- survey_results |>
+  filter(QID4 %in% c('Graduate Student', 'Undergraduate Student')) |>
   mutate(
     QID4 = ifelse(QID4 == 'Graduate Student', 'Graduate', 'Undergraduate'),
     QID7 = str_to_title(QID7),
     QID7 = str_replace_all(QID7, '&', 'And'),
-    QID7 = str_remove_all(QID7, ' Phd')) |>
+    QID7 = str_remove_all(QID7, ' Phd'),
+
+    QID7 = str_trim(QID7), ) |>
   # Manually clean up some majors
   mutate(
     QID7 = case_when(
@@ -184,10 +186,35 @@ major_gg <- survey_results |>
       QID7 == 'Industrial And Systems Engineering Phd' ~ 'Industrial & Systems Engineering',
       QID7 == 'Math' ~ 'Mathematics',
       QID7 == 'Nurtritional Sciences' ~ 'Nutrition Science',
+
+
+      QID7 == 'Bio' ~ 'Biology',
+      QID7 == 'Cognitive A Neuroscience' ~ 'Neuroscience',
+      QID7 == 'Computer Engineering' ~ 'Computer Science',
+      QID7 == 'Crim' ~ 'Criminal Justice',
+      QID7 == 'Cybersecurity Analytics' ~ 'Cybersecurity',
+      QID7 == 'D.Engineering In Cybersecurity Analytics' ~ 'Cybersecurity',
+      QID7 == 'Double Major In History And Marketing With A Minor In Accounting.' ~ 'History',
+      QID7 == 'Econ And American Studies' ~ 'Economics',
+      QID7 == 'Economics And Finance' ~ 'Economics',
+      QID7 == 'Engineerig' ~ 'Engineering',
+      QID7 == 'Geography And Internarional Affairs' ~ 'International Affairs',
+      QID7 == 'Ia' ~ 'International Affairs',
+      QID7 == 'Marketing And History' ~ 'Marketing',
+      QID7 == 'Political Science And Criminal Justice' ~ 'Political Science',
+      QID7 == 'Political Science And Finance' ~ 'Political Science',
+      QID7 == 'Political Science And Religion' ~ 'Political Science',
+      QID7 == 'Poli Sci' ~ 'Political Science',
+      QID7 == 'Policsci' ~ 'Political Science',
+      QID7 == 'Polisci And Bio' ~ 'Political Science',
+      QID7 == 'Psychology And Data Science' ~ 'Psychology',
+      QID7 == 'Journalism And Economics' ~ 'Economics',
+      QID7 == 'Human Service & Social Justice, Peace Studies' ~ 'Social Justice',
+
       is.na(QID7) ~ 'Not Provided',
       TRUE ~ QID7
     )
-  ) |> 
+  ) |>
   ggplot(aes(y = reorder(QID7, QID7,
                      function(x) length(x)))) +
   geom_bar(fill = primary_color) +
