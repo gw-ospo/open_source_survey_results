@@ -146,22 +146,19 @@ Faculty and staff respondents were distributed in tenure (years served) at the u
 
 ```{r}
 tenure_gg <- survey_results |>
-  mutate(QID6 = factor(QID6,
-                       levels = c('0-1 years', '1-3 years', '4-7 years', '7-10 years', '10+ years'))) |>
+  mutate(
+    QID6 = ifelse(is.na(QID6) | QID6 == "", "No Response", QID6),
+    QID6 = factor(QID6, levels = c("No Response", "0-1 years", "2-3 years", "4-6 years", "7-10 years", "10+ years"))
+  ) |>
   filter(QID4 %in% c('Faculty', 'Staff')) |>
-  ggplot(aes(y = QID6)) +
-  geom_bar(fill = primary_color
-           ) +
-  scale_y_discrete(limits = rev) +
-  labs(
-    y = 'Years Served',
-    x = 'Respondents'
-  ) +
-  facet_wrap(vars(QID4)) +
-  bar_coord_flip_theme
+  ggplot(aes(x = QID6)) +
+  geom_bar(fill = primary_color) +
+  labs(x = 'Years Served', y = 'Respondents') +
+  facet_wrap(vars(QID4), nrow = 1)
 
 ggplotly(tenure_gg, tooltip = 'count')
 ```
+
 
 ### Students
 
