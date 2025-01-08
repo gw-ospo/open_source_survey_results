@@ -164,64 +164,87 @@ ggplotly(tenure_gg, tooltip = 'count')
 
 `r nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',])` respondents identified as students (`r round(nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',]) / nrow(survey_results), 2) * 100`% of respondents). Students came from degree programs in the following subjects:
 
+
 ```{r}
-major_gg <- survey_results |>
+major_stacked <- survey_results |>
   filter(QID4 %in% c('Graduate Student', 'Undergraduate Student')) |>
   mutate(
     QID4 = ifelse(QID4 == 'Graduate Student', 'Graduate', 'Undergraduate'),
     QID7 = str_to_title(QID7),
-    QID7 = str_replace_all(QID7, '&', 'And'),
-    QID7 = str_remove_all(QID7, ' Phd'),
-
-    QID7 = str_trim(QID7), ) |>
+    #QID7 = str_replace_all(QID7, '&', 'And'),
+    #QID7 = str_remove_all(QID7, ' Phd'),
+    QID7 = str_trim(QID7)
+  ) |>
   # Manually clean up some majors
   mutate(
     QID7 = case_when(
-      QID7 == 'Ag And Applied Economics' ~ 'Applied And Agricultural Economics',
-      QID7 == 'Communication Sciences And Disorders (Csd)' ~ 'Communication Sciences And Disorders',
-      QID7 == 'Computer Sciences' ~ 'Computer Science',
-      QID7 == 'Industrial And Systems Engineering Phd' ~ 'Industrial & Systems Engineering',
-      QID7 == 'Math' ~ 'Mathematics',
-      QID7 == 'Nurtritional Sciences' ~ 'Nutrition Science',
 
+      QID7 == "" ~ "Not Provided",
+      QID7 == "Bio" ~ "Biology",
+      QID7 == "Cognitive A Neuroscience" ~ "Other",
+      QID7 == "Computer Engineering" ~ "Computer Science",
+      QID7 == "Crim" ~ "Other",
+      QID7 == "Cybersecurity Analytics" ~ "Cybersecurity",
+      QID7 == "D.engineering In Cybersecurity Analytics" ~ "Cybersecurity",
+      QID7 == "Double Major In History And Marketing With A Minor In Accounting." ~ "History",
+      QID7 == "Econ And American Studies" ~ "Economics",
+      QID7 == "Economics And Finance" ~ "Economics",
+      QID7 == "Engineerig" ~ "Engineering",
 
-      QID7 == 'Bio' ~ 'Biology',
-      QID7 == 'Cognitive A Neuroscience' ~ 'Neuroscience',
-      QID7 == 'Computer Engineering' ~ 'Computer Science',
-      QID7 == 'Crim' ~ 'Criminal Justice',
-      QID7 == 'Cybersecurity Analytics' ~ 'Cybersecurity',
-      QID7 == 'D.Engineering In Cybersecurity Analytics' ~ 'Cybersecurity',
-      QID7 == 'Double Major In History And Marketing With A Minor In Accounting.' ~ 'History',
-      QID7 == 'Econ And American Studies' ~ 'Economics',
-      QID7 == 'Economics And Finance' ~ 'Economics',
-      QID7 == 'Engineerig' ~ 'Engineering',
-      QID7 == 'Geography And Internarional Affairs' ~ 'International Affairs',
-      QID7 == 'Ia' ~ 'International Affairs',
-      QID7 == 'Marketing And History' ~ 'Business',
-      QID7 == 'Political Science And Criminal Justice' ~ 'Political Science',
-      QID7 == 'Political Science And Finance' ~ 'Political Science',
-      QID7 == 'Political Science And Religion' ~ 'Political Science',
-      QID7 == 'Poli Sci' ~ 'Political Science',
-      QID7 == 'Policsci' ~ 'Political Science',
-      QID7 == 'Polisci And Bio' ~ 'Political Science',
-      QID7 == 'Psychology And Data Science' ~ 'Psychology',
-      QID7 == 'Journalism And Economics' ~ 'Economics',
-      QID7 == 'Human Service & Social Justice, Peace Studies' ~ 'Social Justice',
+      QID7 == "Geography And Internarional Affairs" ~ "International Affairs",
+      QID7 == "Ia" ~ "International Affairs",
+      QID7 == "Marketing And History" ~ "Business",
+      QID7 == "Political Science And Criminal Justice" ~ "Political Science",
+      QID7 == "Political Science And Finance" ~ "Political Science",
+      QID7 == "Political Science And Religion" ~ "Political Science",
+      QID7 == "Poli Sci" ~ "Political Science",
+      QID7 == "Policsci" ~ "Political Science",
+      QID7 == "Polisci And Bio" ~ "Political Science",
+      QID7 == "Psychology And Data Science" ~ "Psychology",
+      QID7 == "Journalism And Economics" ~ "Economics",
+      QID7 == "Human Service & Social Justice, Peace Studies" ~ "Other",
 
-      is.na(QID7) ~ 'Not Provided',
+      QID7 == "Art History" ~ "Other",
+      QID7 == "Business Analytics" ~ "Business",
+      QID7 == "Chemistry" ~ "Other",
+      QID7 == "Criminal Justice" ~ "Other",
+      QID7 == "Electrical Engineering" ~ "Engineering",
+      QID7 == "Environmental Science" ~ "Other",
+      QID7 == "Human Paleobiology" ~ "Other",
+      QID7 == "Management" ~ "Business",
+      QID7 == "Medicine" ~ "Other",
+      QID7 == "Museum Studies" ~ "Other",
+      QID7 == "Organizational Sciences" ~ "Other",
+      QID7 == "Nutrition" ~ "Other",
+      QID7 == "Physics" ~ "Other",
+      QID7 == "Political Communications" ~ "Other",
+      QID7 == "Public Policy" ~ "Other",
+      QID7 == "Systems Engineering" ~ "Engineering",
+      QID7 == "Undecided" ~ "Other",
+
+      is.na(QID7) ~ "Not Provided",
       TRUE ~ QID7
     )
   ) |>
-  ggplot(aes(y = reorder(QID7, QID7,
-                     function(x) length(x)))) +
-  geom_bar(fill = primary_color) +
-  scale_x_continuous(breaks = pretty_breaks()) +
+  # Calculate total respondents per major
+  group_by(QID7) |>
+  mutate(total = n()) |>
+  ungroup() |>
+  # Reorder QID7 by descending total count
+  mutate(QID7 = fct_reorder(QID7, total, .desc = FALSE))
+
+# Create stacked horizontal bar chart
+major_stacked_plot <- ggplot(major_stacked, aes(x = QID7, fill = QID4)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Undergraduate" = "#063244", "Graduate" = "#908065")) +
+  coord_flip() +  # horizontal bars
   labs(
-    y = 'Major',
-    x = 'Respondents'
+    y = 'Respondents',
+    x = 'Major',
+    fill = 'Student Type'
   ) +
-  facet_wrap(vars(QID4)) +
   bar_coord_flip_theme
 
-ggplotly(major_gg, tooltip = 'count')
+# Convert ggplot to interactive Plotly chart
+ggplotly(major_stacked_plot, tooltip = 'count')
 ```
