@@ -165,7 +165,7 @@ ggplotly(tenure_gg, tooltip = 'count')
 
 ### Students
 
-`r nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',])` respondents identified at students (`r round(nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',]) / nrow(survey_results), 2) * 100`% of respondents). Students came from degree programs in the following subjects:
+`r nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',])` respondents identified as students (`r round(nrow(survey_results[survey_results$QID4 == 'Graduate Student'|survey_results$QID4 == 'Undergraduate Student',]) / nrow(survey_results), 2) * 100`% of respondents). Students came from degree programs in the following subjects:
 
 ```{r}
 major_gg <- survey_results |>
@@ -200,7 +200,7 @@ major_gg <- survey_results |>
       QID7 == 'Engineerig' ~ 'Engineering',
       QID7 == 'Geography And Internarional Affairs' ~ 'International Affairs',
       QID7 == 'Ia' ~ 'International Affairs',
-      QID7 == 'Marketing And History' ~ 'Marketing',
+      QID7 == 'Marketing And History' ~ 'Business',
       QID7 == 'Political Science And Criminal Justice' ~ 'Political Science',
       QID7 == 'Political Science And Finance' ~ 'Political Science',
       QID7 == 'Political Science And Religion' ~ 'Political Science',
