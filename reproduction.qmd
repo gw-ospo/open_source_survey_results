@@ -8,7 +8,7 @@ title: "Reproducing the Survey"
 source('setup.R')
 ```
 
-Both the 2024 `r uni_name` open source survey and this Quarto analysis are open source. Instructions for customizing and reproducing this analysis are included here for ease of use.
+Both the 2024 UW-Madison open source survey and this Quarto analysis website are open source. Instructions for customizing and reproducing this analysis are included here for ease of use.
 
 This project was inspired by [a needs assessment survey](https://github.com/ds3-nyu/Needs-Assessment-Survey) conducted by the [NYU Data Science and Software Services](https://cds.nyu.edu/ds3/) (DS3), an open source survey which was reproduced at the University of Washington.
 
@@ -16,7 +16,7 @@ This project was inspired by [a needs assessment survey](https://github.com/ds3-
 
 
 
-The 2024 open source survey at `r uni_name` was administered with Qualtrics. Both the [.qsf file](https://github.com/UW-Madison-DSI/open_source_survey_results/blob/main/Open_Source_Program_Office_Survey.qsf) for the survey and [an example CSV](https://github.com/UW-Madison-DSI/open_source_survey_results/blob/main/data/survey_data.csv) of anonymized survey response data are available in this project's GitHub repo.
+The 2024 open source survey at UW-Madison was administered with Qualtrics. Both the [.qsf file](https://github.com/UW-Madison-DSI/open_source_survey_results/blob/main/Open_Source_Program_Office_Survey.qsf) for the survey and [an example CSV](https://github.com/UW-Madison-DSI/open_source_survey_results/blob/main/data/survey_data.csv) of anonymized survey response data are available in this project's GitHub repo.
 
 ### Exporting Survey Data From Qualtrics
 Once your survey period is over, you can easily export your survey data. Within the Qualtrics project site for your survey, navigate to "Data and Analysis" $\rightarrow$ "Export & Import" $\rightarrow$ "Export Data..." and use the default settings in the options menu ("Download all fields" and "Use choice text") to export the survey response data as a CSV file.
@@ -29,7 +29,7 @@ Once your survey period is over, you can easily export your survey data. Within 
 
 ## About the Quarto Site
 
-This Quarto site uses the [UW-Madison Quarto Template](https://github.com/UW-Madison-DSI/uw_quarto_site_template) to conform to UW-Madison brand guidelines. The template is easily customizable to incorporate the color schemes, logos, and typefaces of other institutions. 
+This Quarto site uses the [UW-Madison Quarto Template](https://github.com/UW-Madison-DSI/uw_quarto_site_template) to conform to UW-Madison brand guidelines. The template is easily customizable to incorporate the color schemes, logos, and typefaces of other institutions.
 
 Analysis of survey results is performed within R code chunks within the Quarto files for the appropriate pages. **Please note that the the analysis code written for this template is specific to the [format of the 2024 UW-Madison open source survey](https://github.com/UW-Madison-DSI/open_source_survey_results/tree/main/data)**. If you change the format of your survey you will likely need to customize the code to adapt to your survey's response data.
 
