@@ -8,6 +8,7 @@
 # Directories
 /.quarto/
 docs/
+site_libs/
 
 data/*.csv
 !data/survey_data.csv
